@@ -1,6 +1,11 @@
 FROM mono:6.12.0.182-slim
+
 WORKDIR /app
 
-COPY main.cs .
+RUN apt update
+RUN apt install -y mono-mcs
 
-RUN mcs hello.cs
+COPY main.cs .
+RUN mcs main.cs
+
+CMD ["sleep", "infinity"]

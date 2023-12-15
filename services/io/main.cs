@@ -4,6 +4,6 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("Hello, my G!");
+        Console.WriteLine("Hello, World");
     }
 }
