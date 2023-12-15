@@ -1,18 +1,15 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+WORKDIR /App
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+COPY . ./
+RUN dotnet restore
 
-WORKDIR /app
+RUN dotnet publish -c Release -o out
 
-COPY main.cs .
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /App
+COPY --from=build-env /App/out .
+COPY data.csv .
 
-RUN dotnet publish -c Release -o out main.cs
-
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1 AS runtime
-WORKDIR /app
-
-# Copie des fichiers publiés depuis l'image de compilation
-COPY --from=build /app/out .
-
-# Commande par défaut à exécuter
-CMD ["dotnet", "main.dll"]
-
+ENTRYPOINT ["dotnet", "DotNet.Docker.dll"]

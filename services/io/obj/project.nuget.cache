@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "IbSr4QD1kdUcaq5Zd8W5Cb4WRZZH4c4ykZaMaHJYdYVRF4gWiDqdaIPTxI46etOk1rks/f01LYjGzXmNUpm5fQ==",
+  "success": true,
+  "projectFilePath": "/home/paco/dev/avg-grade-ultimate/services/io/App/DotNet.Docker.csproj",
+  "expectedPackageFiles": [
+    "/home/paco/.nuget/packages/csvhelper/27.1.1/csvhelper.27.1.1.nupkg.sha512",
+    "/home/paco/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
