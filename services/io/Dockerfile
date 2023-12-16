@@ -12,4 +12,4 @@ WORKDIR /App
 COPY --from=build-env /App/out .
 COPY data.csv .
 
-ENTRYPOINT ["dotnet", "DotNet.Docker.dll"]
+ENTRYPOINT ["dotnet", "Io.dll"]
