@@ -7,7 +7,7 @@ using CsvHelper.Configuration;
 
 class Program
 {
-static void Main()
+    static void Main()
     {
         // Chemin vers le fichier CSV d'entrée
         string cheminFichierCSV = "data.csv";
@@ -29,13 +29,18 @@ static void Main()
         using (var csv = new CsvReader(reader, configuration))
         {
 
-            foreach (var enregistrement in csv.GetRecords<dynamic>())
+            foreach (var i in csv.GetRecords<Line>())
             {
-                Console.WriteLine(enregistrement);
+                Console.WriteLine(i.Nom);
             }
             // var json = Newtonsoft.Json.JsonConvert.SerializeObject(listeEnregistrements, Newtonsoft.Json.Formatting.Indented);
 
             // File.WriteAllText(cheminFichierJSON, json);
         }
+    }
+    public class Line
+    {
+        public int Id { get; set; }
+        public string Nom { get; set; }
     }
 }
