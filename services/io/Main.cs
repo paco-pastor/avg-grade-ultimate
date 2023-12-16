@@ -23,24 +23,19 @@ static void Main()
 
     static void ConvertirCSVEnJSON(string cheminFichierCSV, string cheminFichierJSON)
     {
-        // Configuration CsvHelper (change si nécessaire)
         var configuration = new CsvConfiguration(CultureInfo.InvariantCulture);
 
-        // Utilisation de CsvHelper pour lire le CSV
         using (var reader = new StreamReader(cheminFichierCSV))
         using (var csv = new CsvReader(reader, configuration))
         {
-            // Lis les enregistrements du CSV en tant qu'objets
-            var enregistrements = csv.GetRecords<dynamic>();
 
-            // Convertit les objets en liste pour sérialiser en JSON
-            var listeEnregistrements = new List<dynamic>(enregistrements);
+            foreach (var enregistrement in csv.GetRecords<dynamic>())
+            {
+                Console.WriteLine(enregistrement);
+            }
+            // var json = Newtonsoft.Json.JsonConvert.SerializeObject(listeEnregistrements, Newtonsoft.Json.Formatting.Indented);
 
-            // Sérialise la liste en JSON
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(listeEnregistrements, Newtonsoft.Json.Formatting.Indented);
-
-            // Écrit le JSON dans un fichier
-            File.WriteAllText(cheminFichierJSON, json);
+            // File.WriteAllText(cheminFichierJSON, json);
         }
     }
 }
