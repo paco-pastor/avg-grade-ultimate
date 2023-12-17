@@ -3,5 +3,8 @@ services:
   io:
     build:
       context: services/io
-    volumes:
-      - .:/app
+  ihm:
+    build:
+      context: services/ihm
+    ports:
+      - 3000:3000
