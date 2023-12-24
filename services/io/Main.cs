@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using CsvHelper;
-using CsvHelper.Configuration;
 
 class Program
 {
@@ -13,30 +9,28 @@ class Program
         Console.WriteLine("--------------------------------------------------------------------");
         Console.WriteLine("Début d'éxecution du C#");
         Console.WriteLine("--------------------------------------------------------------------");
-        var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            Delimiter = ";",
-            IgnoreBlankLines = true
-        };
 
-        using (var reader = new StreamReader("data.csv"))
-        using (var csv = new CsvReader(reader, configuration))
-        {
-            foreach (var line in csv.GetRecords<Line>())
-            {
-                Console.WriteLine(line.etudid.GetType());
-            }
-        }
+        List<List<string>> csv = ReadCSV("data.csv");
+
         Console.WriteLine();
         Console.WriteLine("--------------------------------------------------------------------");
         Console.WriteLine("C# executé !");
         Console.WriteLine("--------------------------------------------------------------------");
     }
 
-}
-public class Line
-{
-    public object? etudid { get; set; }
-    public string? Prenom { get; set; }
-}
+    static List<List<string>> ReadCSV(string path)
+    {
+        using (StreamReader sr = new StreamReader(path))
+        {
+            string line;
+            List<List<string>> csv = new List<List<string>>();
+            while ((line = sr.ReadLine()) != null)
+            {
+                List<string> lineAsList = line.Split(';').ToList();
+                csv.Add(lineAsList);
+            }
+            return csv;
+        }
+    }
 
+}
