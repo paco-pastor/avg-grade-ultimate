@@ -9,38 +9,34 @@ class Program
 {
     static void Main()
     {
-        // Chemin vers le fichier CSV d'entrée
-        string cheminFichierCSV = "data.csv";
+        Console.WriteLine();
+        Console.WriteLine("--------------------------------------------------------------------");
+        Console.WriteLine("Début d'éxecution du C#");
+        Console.WriteLine("--------------------------------------------------------------------");
+        var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ";",
+            IgnoreBlankLines = true
+        };
 
-        // Chemin vers le fichier JSON de sortie
-        string cheminFichierJSON = "data.json";
-
-        // Convertit le CSV en JSON
-        ConvertirCSVEnJSON(cheminFichierCSV, cheminFichierJSON);
-
-        Console.WriteLine("Conversion terminée. JSON généré avec succès!");
-    }
-
-    static void ConvertirCSVEnJSON(string cheminFichierCSV, string cheminFichierJSON)
-    {
-        var configuration = new CsvConfiguration(CultureInfo.InvariantCulture);
-
-        using (var reader = new StreamReader(cheminFichierCSV))
+        using (var reader = new StreamReader("data.csv"))
         using (var csv = new CsvReader(reader, configuration))
         {
-
-            foreach (var i in csv.GetRecords<Line>())
+            foreach (var line in csv.GetRecords<Line>())
             {
-                Console.WriteLine(i.Nom);
+                Console.WriteLine(line.etudid.GetType());
             }
-            // var json = Newtonsoft.Json.JsonConvert.SerializeObject(listeEnregistrements, Newtonsoft.Json.Formatting.Indented);
-
-            // File.WriteAllText(cheminFichierJSON, json);
         }
+        Console.WriteLine();
+        Console.WriteLine("--------------------------------------------------------------------");
+        Console.WriteLine("C# executé !");
+        Console.WriteLine("--------------------------------------------------------------------");
     }
-    public class Line
-    {
-        public int Id { get; set; }
-        public string Nom { get; set; }
-    }
+
 }
+public class Line
+{
+    public object? etudid { get; set; }
+    public string? Prenom { get; set; }
+}
+
