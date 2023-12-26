@@ -12,13 +12,19 @@ class Program
         Console.WriteLine("--------------------------------------------------------------------");
 
         List<List<string>> csv = ReadCSV("data.csv");
+
+        // TODO Dictionnaire NomChamp -> IndexColonne pour rendre dynamique le tout
+
         foreach (List<string> line in csv)
         {
             if (int.TryParse(line[0], out int id))
             {
-                Student student = new Student
+                Student student = new Student // TODO : utiliser indexes dynamiques selon header colonne
                 {
-                    Id = id
+                    Id = id,
+                    Surname = line[5],
+                    Name = line[6],
+                    TU = line[8],
                 };
                 string json = JsonConvert.SerializeObject(student);
                 Console.WriteLine(json);
@@ -49,5 +55,8 @@ class Program
     public class Student
     {
         public int Id { get; set; }
+        public string Surname { get; set; }
+        public string Name { get; set; }
+        public string TU { get; set; }
     }
 }
