@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Newtonsoft.Json;
 
 class Program
 {
@@ -11,6 +12,18 @@ class Program
         Console.WriteLine("--------------------------------------------------------------------");
 
         List<List<string>> csv = ReadCSV("data.csv");
+        foreach (List<string> line in csv)
+        {
+            if (int.TryParse(line[0], out int id))
+            {
+                Student student = new Student
+                {
+                    Id = id
+                };
+                string json = JsonConvert.SerializeObject(student);
+                Console.WriteLine(json);
+            }
+        }
 
         Console.WriteLine();
         Console.WriteLine("--------------------------------------------------------------------");
@@ -33,4 +46,8 @@ class Program
         }
     }
 
+    public class Student
+    {
+        public int Id { get; set; }
+    }
 }
