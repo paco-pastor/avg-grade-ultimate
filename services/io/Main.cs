@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 class Program
@@ -13,18 +14,17 @@ class Program
 
         List<List<string>> csv = ReadCSV("data.csv");
 
-        // TODO Dictionnaire NomChamp -> IndexColonne pour rendre dynamique le tout
-
         foreach (List<string> line in csv)
         {
             if (int.TryParse(line[0], out int id))
             {
-                Student student = new Student // TODO : utiliser indexes dynamiques selon header colonne
+                Student student = new Student
                 {
                     Id = id,
-                    Surname = line[5],
-                    Name = line[6],
-                    TU = line[8],
+                    Surname = line[csv[0].IndexOf("Prenom")],
+                    Name = line[csv[0].IndexOf("Nom", 4)],
+                    Cursus = line[csv[0].IndexOf("Cursus")],
+                    TU = line[csv[0].IndexOf("UEs")],
                 };
                 string json = JsonConvert.SerializeObject(student);
                 Console.WriteLine(json);
@@ -55,8 +55,9 @@ class Program
     public class Student
     {
         public int Id { get; set; }
-        public string Surname { get; set; }
         public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Cursus { get; set; }
         public string TU { get; set; }
     }
 }
