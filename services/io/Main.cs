@@ -7,34 +7,28 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine();
-        Console.WriteLine("--------------------------------------------------------------------");
-        Console.WriteLine("Début d'éxecution du C#");
-        Console.WriteLine("--------------------------------------------------------------------");
-
         List<List<string>> csv = ReadCSV("data.csv");
+        List<string> TUs = ListTUs(csv);
 
         foreach (List<string> line in csv)
         {
-            if (int.TryParse(line[0], out int id))
+            if (int.TryParse(line[0], out int id)) // If student id exists
             {
+                Dictionary<string, string> grades = new Dictionary<string, string>();
+                foreach (string tu in TUs)
+                    grades[tu] = line[csv[0].IndexOf(tu)];
+
                 Student student = new Student
                 {
                     Id = id,
-                    Surname = line[csv[0].IndexOf("Prenom")],
-                    Name = line[csv[0].IndexOf("Nom", 4)],
-                    Cursus = line[csv[0].IndexOf("Cursus")],
-                    TU = line[csv[0].IndexOf("UEs")],
+                    Surname = line[csv[0].IndexOf("Nom", 4)],
+                    Name = line[csv[0].IndexOf("Prenom")],
+                    Grades = grades
                 };
                 string json = JsonConvert.SerializeObject(student);
                 Console.WriteLine(json);
             }
         }
-
-        Console.WriteLine();
-        Console.WriteLine("--------------------------------------------------------------------");
-        Console.WriteLine("C# executé !");
-        Console.WriteLine("--------------------------------------------------------------------");
     }
 
     static List<List<string>> ReadCSV(string path)
@@ -52,12 +46,20 @@ class Program
         }
     }
 
+    static List<string> ListTUs(List<List<string>> csv)
+    {
+        List<string> TUs = new List<string>();
+        foreach (string header in csv[0])
+            if (header.StartsWith("S") && (header.Length == 5 || header.Length == 6))
+                TUs.Add(header);
+        return TUs;
+    }
+
     public class Student
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Cursus { get; set; }
-        public string TU { get; set; }
+        public Dictionary<string, string> Grades { get; set; }
     }
 }
