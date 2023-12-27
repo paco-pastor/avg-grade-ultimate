@@ -22,7 +22,7 @@ class Program
                 Student student = new Student
                 {
                     Id = id,
-                    Surname = line[csv[0].IndexOf("Nom", 4)],
+                    Surname = line[csv[0].IndexOf("Nom", 4)].ToUpper(),
                     Name = line[csv[0].IndexOf("Prenom")],
                     Grades = grades
                 };
