@@ -5,9 +5,9 @@ using Newtonsoft.Json;
 
 class Program
 {
-    static void Main() // TODO : Use while loop to keep container alive
+    static void Main(string[] args)
     {
-        List<List<string>> csv = ReadCSV("data.csv");
+        List<List<string>> csv = ReadCSV(args[0]);
         List<string> TUs = ListTUs(csv);
         List<Student> jsonList = new List<Student>();
 

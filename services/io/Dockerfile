@@ -10,6 +10,5 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 COPY --from=build-env /App/out .
-COPY data.csv .
 
-ENTRYPOINT ["dotnet", "Io.dll"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
