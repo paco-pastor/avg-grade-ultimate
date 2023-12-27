@@ -5,10 +5,11 @@ using Newtonsoft.Json;
 
 class Program
 {
-    static void Main()
+    static void Main() // TODO : Use while loop to keep container alive
     {
         List<List<string>> csv = ReadCSV("data.csv");
         List<string> TUs = ListTUs(csv);
+        List<Student> jsonList = new List<Student>();
 
         foreach (List<string> line in csv)
         {
@@ -25,10 +26,11 @@ class Program
                     Name = line[csv[0].IndexOf("Prenom")],
                     Grades = grades
                 };
-                string json = JsonConvert.SerializeObject(student);
-                Console.WriteLine(json);
+                jsonList.Add(student);
             }
         }
+
+        File.WriteAllText("data.json", JsonConvert.SerializeObject(jsonList));
     }
 
     static List<List<string>> ReadCSV(string path)
