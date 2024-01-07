@@ -1,36 +1,62 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 
 class Program
 {
-    static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        List<List<string>> csv = ReadCSV(args[0]);
-        List<string> TUs = ListTUs(csv);
-        List<Student> jsonList = new List<Student>();
 
-        foreach (List<string> line in csv)
-        {
-            if (int.TryParse(line[0], out int id)) // If student id exists
+        var webHost = Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
             {
-                Dictionary<string, string> grades = new Dictionary<string, string>();
-                foreach (string tu in TUs)
-                    grades[tu] = line[csv[0].IndexOf(tu)];
-
-                Student student = new Student
+                webBuilder.Configure(app =>
                 {
-                    Id = id,
-                    Surname = line[csv[0].IndexOf("Nom", 4)].ToUpper(),
-                    Name = line[csv[0].IndexOf("Prenom")],
-                    Grades = grades
-                };
-                jsonList.Add(student);
-            }
-        }
+                    app.UseRouting();
 
-        File.WriteAllText("data.json", JsonConvert.SerializeObject(jsonList));
+                    app.UseEndpoints(endpoints =>
+                    {
+                        endpoints.MapPost("/io", async context =>
+                        {
+                            string csvPath = await new System.IO.StreamReader(context.Request.Body).ReadToEndAsync();
+
+                            List<List<string>> csv = ReadCSV(csvPath);
+                            List<string> TUs = ListTUs(csv);
+                            List<Student> jsonList = new List<Student>();
+
+                            foreach (List<string> line in csv)
+                            {
+                                if (int.TryParse(line[0], out int id)) // If student id exists
+                                {
+                                    Dictionary<string, string> grades = new Dictionary<string, string>();
+                                    foreach (string tu in TUs)
+                                        grades[tu] = line[csv[0].IndexOf(tu)];
+
+                                    Student student = new Student
+                                    {
+                                        Id = id,
+                                        Surname = line[csv[0].IndexOf("Nom", 4)].ToUpper(),
+                                        Name = line[csv[0].IndexOf("Prenom")],
+                                        Grades = grades
+                                    };
+                                    jsonList.Add(student);
+                                }
+                            }
+
+                            // File.WriteAllText("data.json", JsonConvert.SerializeObject(jsonList));
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(jsonList));
+                        });
+                    });
+                });
+            })
+            .Build();
+
+        await webHost.RunAsync();
     }
 
     static List<List<string>> ReadCSV(string path)
