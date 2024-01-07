@@ -23,9 +23,9 @@ class Program
                     {
                         endpoints.MapPost("/io", async context =>
                         {
-                            string csvPath = await new System.IO.StreamReader(context.Request.Body).ReadToEndAsync();
+                            string csvContent = await new System.IO.StreamReader(context.Request.Body).ReadToEndAsync();
 
-                            List<List<string>> csv = ReadCSV(csvPath);
+                            List<List<string>> csv = ReadCSV(csvContent);
                             List<string> TUs = ListTUs(csv);
                             List<Student> jsonList = new List<Student>();
 
@@ -59,9 +59,9 @@ class Program
         await webHost.RunAsync();
     }
 
-    static List<List<string>> ReadCSV(string path)
+    static List<List<string>> ReadCSV(string csvContent)
     {
-        using (StreamReader sr = new StreamReader(path))
+        using (StringReader sr = new StringReader(csvContent))
         {
             string line;
             List<List<string>> csv = new List<List<string>>();
