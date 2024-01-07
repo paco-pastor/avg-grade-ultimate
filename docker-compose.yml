@@ -3,6 +3,8 @@ services:
   io:
     build:
       context: services/io
+    ports:
+      - 5000:5000
   ihm:
     build:
       context: services/ihm

@@ -15,6 +15,7 @@ class Program
         var webHost = Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
+                webBuilder.UseUrls("http://0.0.0.0:5000");
                 webBuilder.Configure(app =>
                 {
                     app.UseRouting();
