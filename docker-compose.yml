@@ -1,15 +1,15 @@
 version: "3"
 services:
-  # ihm:
-  #   build:
-  #     context: services/ihm
-  #   ports:
-  #     - 3000:3000
-  # io:
-  #   build:
-  #     context: services/io
-  #   ports:
-  #     - 5000:5000
+  ihm:
+    build:
+      context: services/ihm
+    ports:
+      - 3000:3000
+  io:
+    build:
+      context: services/io
+    ports:
+      - 5000:5000
   calcul:
     build:
       context: services/calcul
