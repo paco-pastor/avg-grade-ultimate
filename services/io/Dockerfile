@@ -10,4 +10,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 COPY --from=build-env /App/out .
 
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "Io.dll"]
