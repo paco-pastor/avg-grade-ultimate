@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 
 app.post("/io", async (req, res) => {
   try {
-    const response = await axios.post("http://localhost:5000/io", req.body);
+    const response = await axios.post("http://io:5000/io", req.body);
     res.json(response.data);
   } catch (error) {
     console.error(error);
