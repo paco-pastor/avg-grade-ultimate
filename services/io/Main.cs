@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
@@ -19,7 +19,7 @@ class Program
                 webBuilder.Configure(app =>
                 {
                     app.UseRouting();
-
+                    // TODO : Add coeffs
                     app.UseEndpoints(endpoints =>
                     {
                         endpoints.MapPost("/io", async context =>
