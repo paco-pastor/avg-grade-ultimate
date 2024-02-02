@@ -30,7 +30,7 @@ class Program {
                 {
                   Dictionary < string, string > grades = new Dictionary < string, string > ();
                   foreach(string tu in TUs)
-                  grades[tu] = line[csv[0].IndexOf(tu)];
+                  grades[tu] = line[csv[0].IndexOf(tu)].Replace(",", ".");
 
                   Student student = new Student {
                     Id = id,
