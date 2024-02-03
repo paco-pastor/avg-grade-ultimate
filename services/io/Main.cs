@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 class Program {
@@ -14,8 +15,22 @@ class Program {
     var webHost = Host.CreateDefaultBuilder(args)
       .ConfigureWebHostDefaults(webBuilder => {
         webBuilder.UseUrls("http://0.0.0.0:5000");
+        webBuilder.ConfigureServices(services =>
+        {
+          services.AddCors(options =>
+          {
+            options.AddPolicy("AllowSpecificOrigin",
+                builder =>
+                {
+                  builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+          });
+        });
         webBuilder.Configure(app => {
           app.UseRouting();
+          app.UseCors("AllowSpecificOrigin");
           app.UseEndpoints(endpoints => {
             endpoints.MapPost("/io", async context => {
               string csvContent = await new System.IO.StreamReader(context.Request.Body).ReadToEndAsync();
