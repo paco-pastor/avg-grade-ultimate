@@ -32,7 +32,7 @@ class Program {
           app.UseRouting();
           app.UseCors("AllowSpecificOrigin");
           app.UseEndpoints(endpoints => {
-            endpoints.MapPost("/io", async context => {
+            endpoints.MapPost("/io", async context => { // Definition de la route /io
               string csvContent = await new System.IO.StreamReader(context.Request.Body).ReadToEndAsync();
 
               List < List < string >> csv = ReadCSV(csvContent);
@@ -41,7 +41,7 @@ class Program {
               List < double > coeffList = new List < double > ();
 
               foreach(List < string > line in csv) {
-                if (int.TryParse(line[0], out int id)) // If student id exists
+                if (int.TryParse(line[0], out int id)) // Si l'ID etudiant existe
                 {
                   Dictionary < string, string > grades = new Dictionary < string, string > ();
                   foreach(string tu in TUs)
@@ -54,7 +54,7 @@ class Program {
                       Grades = grades
                   };
                   studentList.Add(student);
-                } else {
+                } else { // Sinon on vérifie si la ligne contient les coefficients afin de les renvoyer egalement
                   if (line[csv[0].IndexOf("Nom")] == "Coef.") {
                     coeffList = ListCoeffs(line);
                   }
@@ -73,6 +73,7 @@ class Program {
     await webHost.RunAsync();
   }
 
+// Renvoi d'une liste de listes de strings correspondant aux lignes et colonnes du CSV
   static List < List < string >> ReadCSV(string csvContent) {
     using(StringReader sr = new StringReader(csvContent)) {
       string line;
@@ -85,6 +86,8 @@ class Program {
     }
   }
 
+// TU = Teaching Unit (UE)
+// Recuperation des en-tetes de colonnes correspondant aux UEs (S1101, S1102, ...)
   static List < string > ListTUs(List < List < string >> csv) {
     List < string > TUs = new List < string > ();
     foreach(string header in csv[0])
@@ -93,6 +96,7 @@ class Program {
     return TUs;
   }
 
+// Recuperation des coefficients
   static List < double > ListCoeffs(List < string > line) {
     List < double > coeffs = new List < double > ();
     foreach(string cell in line) {
@@ -103,6 +107,7 @@ class Program {
     return coeffs;
   }
 
+// Classes utiles pour la serialisation en JSON
   public class Student {
     public int Id {
       get;
@@ -122,6 +127,7 @@ class Program {
     }
   }
 
+// On renvoie une liste de coefficients et une liste d'etudiants dans un objet Result
   public class Result {
     public List < double > Coeffs {
       get;
