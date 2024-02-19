@@ -8,3 +8,6 @@ Average grade calculator solution with Docker
 |service calcul (python)| 8080
 
 Chaque service communique grâce à une api.
+
+Schéma : 
+![schema](schema.png)
