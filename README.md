@@ -9,5 +9,4 @@ Average grade calculator solution with Docker
 
 Chaque service communique grâce à une api.
 
-Schéma : 
 ![schema](schema.png)
